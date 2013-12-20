@@ -1,2 +1,2 @@
-world-map
+World Map
 =========
