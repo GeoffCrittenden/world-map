@@ -14,11 +14,8 @@ class World
   end
 
   def both_land?(coords)
-    if is_land?(coords) && is_land?(opposite(coords))
-      true
-    else
-      false
-    end    
+    return true if is_land?(coords) && is_land?(opposite(coords))
+    false   
   end
 
 end
