@@ -4,7 +4,7 @@ require 'dotenv'
 Dotenv.load
 
 class Location
-  attr_reader :coords, :opp_coords, :info
+  attr_reader :coords, :opp_coords, :status
 
   def initialize(coords)
     @coords     = coords
@@ -13,9 +13,14 @@ class Location
 
   def is_land?(coords)
     # API Magic goes here
-    info = open("http://api.koordinates.com/api/vectorQuery.json/?key=#{ENV['API_KEY']}&layer=1294&x=#{coords[:lat]}&y=#{coords[:lon]}")
-    @info = JSON.parse(info.string)
-    puts @info
+    info    = open("http://api.koordinates.com/api/vectorQuery.json/?key=#{ENV['API_KEY']}&layer=1294&x=#{coords[:lat]}&y=#{coords[:lon]}")
+    @info   = JSON.parse(info.string)
+    if @info["vectorQuery"]["layers"]["1294"]["features"][0]
+      @status = @info["vectorQuery"]["layers"]["1294"]["features"][0]["properties"]["FeatureCla"]
+    else
+      @status = "land"
+    end
+    puts @status
   end
 
   def both_land?
@@ -33,4 +38,6 @@ class Location
 end
 
 spot = Location.new({lat:4,lon:-4})
+spot.is_land?(spot.coords)
+spot = Location.new({lat:42,lon:-87})
 spot.is_land?(spot.coords)
