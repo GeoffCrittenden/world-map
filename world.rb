@@ -1,5 +1,8 @@
+require 'json'
+require 'open-uri'
+
 class Location
-  attr_reader :coords, :opp_coords
+  attr_reader :coords, :opp_coords, :info
 
   def initialize(coords)
     @coords     = coords
@@ -20,7 +23,9 @@ class Location
 
   def is_land?(coords)
     # API Magic goes here
-
+    info = open("http://api.koordinates.com/api/vectorQuery.json/?key=#{'API_KEY'}&layer=1294&x=#{coords[:lat]}&y=#{coords[:lon]}")
+    @info = JSON.parse(info)
+    puts @info
   end
 
 end
