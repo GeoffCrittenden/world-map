@@ -1,7 +1,6 @@
 class World
 
-  def initialize(map_data)
-    @map_data = map_data
+  def initialize
   end
 
   def opposite(coords)
