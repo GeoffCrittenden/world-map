@@ -6,11 +6,6 @@ class Location
     @opp_coords = opposite
   end
 
-  def opposite
-    return { lat: 0 - @coords[:lat], lon: @coords[:lon] - 180 } if @coords[:lon] > 0
-    { lat: 0 - @coords[:lat], lon: 180 + @coords[:lon] }
-  end
-
   def is_land?
     # API Magic goes here
 
@@ -19,6 +14,13 @@ class Location
   def both_land?
     return true if is_land?(@coords) && is_land?(@opp_coords)
     false   
+  end
+
+  private
+
+  def opposite
+    return { lat: 0 - @coords[:lat], lon: @coords[:lon] - 180 } if @coords[:lon] > 0
+    { lat: 0 - @coords[:lat], lon: 180 + @coords[:lon] }
   end
 
 end
