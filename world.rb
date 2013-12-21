@@ -4,14 +4,11 @@ class World
   end
 
   def opposite(coords)
-    opp_coords = {}
-    opp_coords[:lat] = 0 - coords[:lat]
     if coords[:lon] > 0
-      opp_coords[:lon] = coords[:lon] - 180
+      return { lat: 0 - coords[:lat], lon: coords[:lon] - 180 }
     else
-      opp_coords[:lon] = 180 + coords[:lon]
+      { lat: 0 - coords[:lat], lon: 180 + coords[:lon] }
     end
-    opp_coords
   end
 
 end
