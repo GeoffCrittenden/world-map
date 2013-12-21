@@ -9,18 +9,11 @@ class Location
   def initialize(coords)
     @coords     = coords
     @opp_coords = opposite
+    @status     = set_status(@coords)
   end
 
   def is_land?(coords)
-    # API Magic goes here
-    info    = open("http://api.koordinates.com/api/vectorQuery.json/?key=#{ENV['API_KEY']}&layer=1294&x=#{coords[:lat]}&y=#{coords[:lon]}")
-    @info   = JSON.parse(info.string)
-    if @info["vectorQuery"]["layers"]["1294"]["features"][0]
-      @status = @info["vectorQuery"]["layers"]["1294"]["features"][0]["properties"]["FeatureCla"]
-    else
-      @status = "land"
-    end
-    puts @status
+    
   end
 
   def both_land?
@@ -35,9 +28,15 @@ class Location
     { lat: 0 - @coords[:lat], lon: 180 + @coords[:lon] }
   end
 
+  def set_status(coords) 
+    info = JSON.parse(open("http://api.koordinates.com/api/vectorQuery.json/?key=#{ENV['API_KEY']}&layer=1294&x=#{coords[:lat]}&y=#{coords[:lon]}").string)
+    return info["vectorQuery"]["layers"]["1294"]["features"][0]["properties"]["FeatureCla"] if info["vectorQuery"]["layers"]["1294"]["features"][0]
+    "land"
+  end
+
 end
 
 spot = Location.new({lat:4,lon:-4})
-spot.is_land?(spot.coords)
+puts spot.status
 spot = Location.new({lat:42,lon:-87})
-spot.is_land?(spot.coords)
+puts spot.status
