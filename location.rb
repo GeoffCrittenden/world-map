@@ -24,7 +24,7 @@ class Location
 
   def both_land?
     return true if @status == "land" && @opp_status == "land"
-    "false"
+    false
   end
 
 end
